@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-dka-deployment
+  labels:
+    app: hello-dka
+spec:
+  replicas: 4 # Especificação de 4 réplicas solicitada
+  selector:
+    matchLabels:
+      app: hello-dka
+  template:
+    metadata:
+      labels:
+        app: hello-dka
+    spec:
+      containers:
+      - name: hello-dka-container
+        image: dannyelkayke/hello-dka-app:v1
+        ports:
+        - containerPort: 3000
+        # Criando o Probe (Liveness Probe) solicitado no exercício
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
